@@ -1,0 +1,10 @@
+import test from 'node:test';import assert from 'node:assert/strict';import {mkdtemp,rm,readFile} from 'node:fs/promises';import {tmpdir} from 'node:os';import {join} from 'node:path';import {apply} from '../index.js';import {Renderer} from '../lib/render.js';
+test('tool generates a PNG, provides inline Markdown, serves the image and removes registrations',async t=>{
+ const root=await mkdtemp(join(tmpdir(),'dsh-mermaid-'));t.after(()=>rm(root,{recursive:true,force:true}));let tool,route;const cleanup=[];
+ const ctx={effect:f=>{const d=f();if(typeof d==='function')cleanup.push(d);},inject:()=>{},tools:{register:t=>{tool=t;return()=>{tool=undefined;};}},webServer:{getOrigin:()=> 'http://127.0.0.1:3080',register:r=>{route=r;return()=>{route=undefined;};}}};apply(ctx,{dataDir:root});
+ const value=await tool.execute({source:'flowchart LR\n A[Question] --> B[Context] --> C[Answer]',title:'Retrieval flow'},{signal:new AbortController().signal});assert.match(value.markdown,/!\[Retrieval flow\]\(http:\/\/127.0.0.1:3080\/plugins\/dsh-mermaid\/images\/[a-f0-9]{48}\.png\)/);assert.equal(tool.output.presentationMeta({},value).mermaid.id,value.id);
+ let code,headers,bytes;const res={writeHead:(c,h)=>{code=c;headers=h;},end:b=>{bytes=b;}};await route.handler({url:new URL(value.imageUrl).pathname,method:'GET'},res);assert.equal(code,200);assert.equal(headers['Content-Type'],'image/png');assert.ok(bytes.length>1000);assert.equal(bytes[0],137);
+ await route.handler({url:'/plugins/dsh-mermaid/images/../../private',method:'GET'},res);assert.equal(code,404);
+ for(const dispose of cleanup.reverse())await dispose();assert.equal(tool,undefined);assert.equal(route,undefined);
+});
+test('syntax errors do not poison the renderer queue',async t=>{const root=await mkdtemp(join(tmpdir(),'dsh-mermaid-'));t.after(()=>rm(root,{recursive:true,force:true}));const r=new Renderer(root,{});t.after(()=>r.dispose());await assert.rejects(()=>r.render('this is not Mermaid','Bad',new AbortController().signal),/rendering failed/);const p=await r.render('sequenceDiagram\n Alice->>Bob: Hello','Sequence',new AbortController().signal);assert.ok(p.bytes>1000);});
