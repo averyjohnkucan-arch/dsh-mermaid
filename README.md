@@ -23,3 +23,5 @@ Dependencies: Mermaid CLI (MIT), Mermaid and their upstream dependencies; the pl
 ## Validation
 
 Five tests pass: source limits/security checks, actual tool execution through Mermaid CLI, PNG image serving and replay metadata, registration disposal, and recovery after invalid syntax. Flowchart and sequence samples rendered with Chromium sandboxing enabled. The live installed image route returned HTTP 200 with image/png; the DSH Plugins page showed Mermaid diagrams enabled. Model-driven chat testing was blocked by the currently selected NInfer engine failing GPU allocation, so that path is not claimed as verified.
+
+See [COMPATIBILITY.md](COMPATIBILITY.md) for supported DSH versions and upgrade checks.
