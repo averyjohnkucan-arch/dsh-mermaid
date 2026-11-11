@@ -38,6 +38,8 @@ jobs:
         run: |
           npm run build --if-present
           npm run check:dsh
+      - name: Install Chromium for rendering tests
+        run: npm exec --no -- puppeteer browsers install chrome
       - name: Test against the target DSH
         run: npm test
       - name: Verify packed exports
