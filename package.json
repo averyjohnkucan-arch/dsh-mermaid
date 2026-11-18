@@ -1,12 +1,12 @@
 {
   "name": "dsh-mermaid",
-  "version": "0.1.1",
+  "version": "0.1.2-rc4.1",
   "type": "module",
   "license": "MIT",
   "description": "Generate Mermaid diagrams as inline chat images through supported DSH tools.",
   "engines": {
-    "node": ">=22.19",
-    "dsh": ">=0.2.2-rc.1 <0.3.0-0"
+    "node": ">=24.9.0",
+    "dsh": "0.2.2-rc.4"
   },
   "exports": {
     ".": "./index.js",
@@ -35,12 +35,12 @@
   },
   "peerDependencies": {
     "@deepseek-ai/cordis": "~4.1.0",
-    "@deepseek-ai/dsh-tools": ">=0.2.2-rc.1 <0.3.0-0",
+    "@deepseek-ai/dsh-tools": "0.2.2-rc.4",
     "@deepseek-ai/schemastery": "~3.19.0"
   },
   "devDependencies": {
     "@deepseek-ai/cordis": "~4.1.0",
-    "@deepseek-ai/dsh-tools": "0.2.2-rc.1",
+    "@deepseek-ai/dsh-tools": "0.2.2-rc.4",
     "@deepseek-ai/schemastery": "~3.19.0"
   },
   "dsh": {
