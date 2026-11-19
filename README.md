@@ -1,6 +1,6 @@
 # Mermaid for DeepSeek Harness
 
-Standalone Cordis plugin for DSH 0.2.1-rc.2. The `mermaid_render` tool creates PNG diagrams, returns Markdown for normal inline assistant images, and adds a replayable tool card with diagram preview and source. Disabling removes the registrations. Completed images remain available after restart while installed.
+Standalone Cordis plugin verified on DSH 0.2.2-rc.4. The `mermaid_render` tool creates PNG diagrams, returns Markdown for normal inline assistant images, and adds a replayable tool card with diagram preview and source. Disabling removes the registrations. Completed images remain available after restart while installed.
 
 The old Local AI v2 implementation patched DSH's AssistantMarkdown renderer. This plugin does not patch DSH, replace assistant rows, mutate another plugin's DOM, or add session event types. Raw Mermaid code fences stay code because this DSH version has no fence-rendering extension point. The model uses the tool for actual inline diagrams.
 
